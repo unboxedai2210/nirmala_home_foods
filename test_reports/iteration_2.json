@@ -1,0 +1,28 @@
+{
+  "summary": "Iteration 2 testing complete. Backend pytest 8/8 PASSED. Frontend validated: 7 non-veg + 3 veg pickle cards each render <img> with non-empty pexels src; 3 snack groups (savoury=9, sweets=6, atukulu=4) with correct banners + tables; spot-checked prices Sunnudalu 179/329/599, Bundi Laddu 149/275/499, Millet Atukulu 89/179/299 all correct; all pickle prices unchanged. Contact form: empty submit shows error toast and does NOT call API or open popup; valid submit POSTs /api/orders (verified via GET that UITestUser persisted), auto-opens window to wa.me/917702220369 with URL-encoded 'New Order from UITestUser - 9999999999: ...' and Notes suffix, shows 'Order received' toast with 'Open WhatsApp to Confirm' action that opens CUSTOMER_CONFIRM_LINK, and form resets. No console errors and no failed pexels image requests.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "ContactForm.jsx: window.open(ownerLink) inside async axios .then path may be popup-blocked by some browsers because it is not a direct user gesture by the time it executes. Today it works in Chromium with sonner toast, but consider opening the window synchronously on submit and updating its URL post-await, OR rely solely on the toast action button (already implemented as a fallback). Non-blocking.",
+    "menu.js: buildOwnerOrderLink does not URL-encode the user inputs separately; encodeURIComponent on the full summary handles it, but special chars in name/phone/items are safely escaped — verified in test.",
+    "Veg pickle <img> uses loading=\"lazy\"; naturalWidth is 0 until in-viewport. Acceptable behavior; tests should scroll into view if asserting natural dimensions.",
+    "Backend Order model: created_at is required datetime; legacy entries without created_at would 500 on GET. Add Optional[datetime] for safety (carry-over from iteration 1)."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "100%", "frontend": "100%" },
+  "test_credentials": "n/a",
+  "seed_data_creation": "Created TEST_* and one UITestUser order in Mongo `orders` collection via API during tests. Safe to clean up.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 2 fully passed. Key data-testids added this iteration: snack-group-{savoury|sweets|atukulu}, snacks-table-{group}, snack-row-{group}-{idx}, snack-mobile-{group}-{idx}. Owner WhatsApp popup uses buildOwnerOrderLink({name,phone,items,notes}) → wa.me/917702220369?text=URL-encoded 'New Order from {name} - {phone}: {items} | Notes: {notes}'. Customer confirm link is CUSTOMER_CONFIRM_LINK with text 'Hi Nirmala! I just placed an order on your website. Please confirm.'. To assert popups in Playwright, stub window.open before submit and read window._opens. Pickle images use lazy-loading so check src attribute, not naturalWidth, unless scrolled into view.",
+  "rca of the issue": "No issues found."
+}

@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { SectionHeader } from "./SectionHeader";
-import { WHATSAPP_LINK } from "../../data/menu";
+import {
+  WHATSAPP_LINK,
+  CUSTOMER_CONFIRM_LINK,
+  buildOwnerOrderLink,
+} from "../../data/menu";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -21,7 +25,21 @@ export const ContactForm = () => {
     setLoading(true);
     try {
       await axios.post(`${API}/orders`, form);
-      toast.success("Thank you! We'll confirm your order on WhatsApp shortly.");
+
+      // 1) Auto-open owner WhatsApp window with order summary
+      const ownerLink = buildOwnerOrderLink(form);
+      window.open(ownerLink, "_blank", "noopener,noreferrer");
+
+      // 2) Show success toast with confirm action for the customer
+      toast.success("Order received! Tap below to confirm on WhatsApp and we'll get started.", {
+        duration: 12000,
+        action: {
+          label: "Open WhatsApp to Confirm",
+          onClick: () =>
+            window.open(CUSTOMER_CONFIRM_LINK, "_blank", "noopener,noreferrer"),
+        },
+      });
+
       setForm({ name: "", phone: "", items: "", notes: "" });
     } catch (err) {
       toast.error("Something went wrong. Please try WhatsApp instead.");
@@ -142,6 +160,9 @@ export const ContactForm = () => {
               or message on WhatsApp →
             </a>
           </div>
+          <p className="text-[11px] text-nirmala-muted/70 italic pt-1">
+            After submitting, a WhatsApp window will open so you can confirm your order with us instantly.
+          </p>
         </form>
       </div>
     </section>
