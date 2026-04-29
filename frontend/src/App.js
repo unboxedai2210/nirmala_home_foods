@@ -1,50 +1,58 @@
-import { useEffect } from "react";
+import React from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import { Toaster } from "sonner";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import { NavBar } from "./components/site/NavBar";
+import { MinOrderBanner } from "./components/site/MinOrderBanner";
+import { Hero } from "./components/site/Hero";
+import { OurStory } from "./components/site/OurStory";
+import { NonVegPickles } from "./components/site/NonVegPickles";
+import { VegPickles } from "./components/site/VegPickles";
+import { Snacks } from "./components/site/Snacks";
+import { HowToOrder } from "./components/site/HowToOrder";
+import { ContactForm } from "./components/site/ContactForm";
+import { Footer } from "./components/site/Footer";
+import { FloatingWhatsApp } from "./components/site/FloatingWhatsApp";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+const Landing = () => (
+  <div className="relative min-h-screen bg-nirmala-bg text-nirmala-text overflow-x-hidden">
+    <NavBar />
+    <MinOrderBanner />
+    <main>
+      <Hero />
+      <OurStory />
+      <NonVegPickles />
+      <div className="section-divider" />
+      <VegPickles />
+      <div className="section-divider" />
+      <Snacks />
+      <div className="section-divider" />
+      <HowToOrder />
+      <div className="section-divider" />
+      <ContactForm />
+    </main>
+    <Footer />
+    <FloatingWhatsApp />
+    <Toaster
+      position="bottom-center"
+      toastOptions={{
+        style: {
+          background: "#2C1507",
+          color: "#F2E4C4",
+          border: "1px solid #3A1E0A",
+        },
+      }}
+    />
+  </div>
+);
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<Landing />} />
         </Routes>
       </BrowserRouter>
     </div>
