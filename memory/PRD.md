@@ -27,15 +27,15 @@ how-to-order, contact form, footer, and a floating WhatsApp CTA.
 - MinOrderBanner (amber, fixed beneath nav).
 - Hero — full viewport, dark moody food bg, Playfair title, two CTAs (WhatsApp / View Menu).
 - Our Story — centered italic serif paragraph on dark surface.
-- Non-Veg Pickles — staggered cards, maroon accent, all 7 items + ₹/kg prices.
-- Veg Pickles — staggered cards, gongura green accent, all 3 items.
-- Snacks — full pricing table (250g/500g/1kg) on desktop, mobile card layout, all 19 items with correct prices.
+- Non-Veg Pickles — staggered cards **with per-item food photos and dark overlay**, maroon accent, all 7 items + ₹/kg prices.
+- Veg Pickles — staggered cards **with per-item photos**, gongura green accent, all 3 items.
+- **Snacks — restructured into 3 groups (Savoury / Sweets & Festival Specials / Healthy Atukulu) each with banner image + pricing table (250g/500g/1kg)**, all 19 items.
 - How to Order — 4-step horizontal flow.
-- Contact form — name/phone/items/notes → POST /api/orders, success/error toasts.
+- Contact form — name/phone/items/notes → POST /api/orders. **On success: auto-opens owner WhatsApp window with order summary AND shows toast with action button "Open WhatsApp to Confirm" linking customer to wa.me with confirm message.** Zero-cost dual notification.
 - Footer — WhatsApp + Instagram links.
 - Floating WhatsApp button (amber, pulse animation, pre-filled message).
 - All interactive elements have `data-testid`.
-- **Backend + Frontend tested 100% by testing agent (iteration_1).**
+- **Tested 100% by testing agent — iteration_1 (initial) and iteration_2 (photos + snack groups + dual WA notify).**
 
 ## Backlog
 ### P1
