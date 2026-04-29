@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { SectionHeader } from "./SectionHeader";
@@ -6,6 +6,7 @@ import {
   WHATSAPP_LINK,
   CUSTOMER_CONFIRM_LINK,
   buildOwnerOrderLink,
+  allOrderableItems,
 } from "../../data/menu";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -14,7 +15,26 @@ export const ContactForm = () => {
   const [form, setForm] = useState({ name: "", phone: "", items: "", notes: "" });
   const [loading, setLoading] = useState(false);
 
+  const groupedItems = useMemo(() => {
+    const map = new Map();
+    allOrderableItems.forEach((it) => {
+      if (!map.has(it.group)) map.set(it.group, []);
+      map.get(it.group).push(it);
+    });
+    return Array.from(map.entries());
+  }, []);
+
   const onChange = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
+
+  const onPickItem = (e) => {
+    const value = e.target.value;
+    if (!value) return;
+    setForm((p) => ({
+      ...p,
+      items: p.items.trim() ? `${p.items.trim()}, ${value}` : value,
+    }));
+    e.target.value = "";
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -26,11 +46,11 @@ export const ContactForm = () => {
     try {
       await axios.post(`${API}/orders`, form);
 
-      // 1) Auto-open owner WhatsApp window with order summary
+      // Auto-open owner WhatsApp window with order summary
       const ownerLink = buildOwnerOrderLink(form);
       window.open(ownerLink, "_blank", "noopener,noreferrer");
 
-      // 2) Show success toast with confirm action for the customer
+      // Success toast with confirm action for the customer
       toast.success("Order received! Tap below to confirm on WhatsApp and we'll get started.", {
         duration: 12000,
         action: {
@@ -114,6 +134,39 @@ export const ContactForm = () => {
               />
             </div>
           </div>
+
+          <div>
+            <label className="block text-[11px] uppercase tracking-[0.24em] text-nirmala-muted mb-2">
+              Quick pick (optional)
+            </label>
+            <select
+              onChange={onPickItem}
+              defaultValue=""
+              className={inputCls + " cursor-pointer appearance-none"}
+              data-testid="contact-quick-pick"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23C4A35A' stroke-width='2'><path d='M1 1l5 5 5-5'/></svg>\")",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right 14px center",
+                paddingRight: "40px",
+              }}
+            >
+              <option value="" disabled>
+                Pick an item to add to your order…
+              </option>
+              {groupedItems.map(([group, items]) => (
+                <optgroup key={group} label={group} style={{ background: "#2C1507", color: "#F2E4C4" }}>
+                  {items.map((it) => (
+                    <option key={it.value} value={it.value} style={{ background: "#1E0E05", color: "#F2E4C4" }}>
+                      {it.label}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+          </div>
+
           <div>
             <label className="block text-[11px] uppercase tracking-[0.24em] text-nirmala-muted mb-2">
               What would you like?
@@ -123,7 +176,7 @@ export const ContactForm = () => {
               value={form.items}
               onChange={onChange("items")}
               className={inputCls + " resize-none"}
-              placeholder="e.g. 500g Mutton Gongura pickle, 1kg Bundi Laddu"
+              placeholder="e.g. 500g Mutton Gongura Pickle (Boneless), 1kg Bundi Laddu"
               data-testid="contact-items-input"
             />
           </div>

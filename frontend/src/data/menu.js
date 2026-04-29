@@ -1,40 +1,12 @@
-// ---- Pickle data (per-card photos, dark-tinted via CSS overlay) ----
+// ---- Pickle data (text-only cards; modal opens on click) ----
 export const nonVegPickles = [
-  {
-    name: "Chicken Pickle",
-    price: 1400,
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg",
-  },
-  {
-    name: "Chicken Gongura Pickle",
-    price: 1500,
-    image: "https://images.pexels.com/photos/2092507/pexels-photo-2092507.jpeg",
-  },
-  {
-    name: "Mutton Pickle",
-    price: 2300,
-    image: "https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg",
-  },
-  {
-    name: "Mutton Gongura Pickle",
-    price: 2400,
-    image: "https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg",
-  },
-  {
-    name: "Prawns Pickle",
-    price: 1700,
-    image: "https://images.pexels.com/photos/725992/pexels-photo-725992.jpeg",
-  },
-  {
-    name: "Prawns Gongura Pickle",
-    price: 1800,
-    image: "https://images.pexels.com/photos/3296434/pexels-photo-3296434.jpeg",
-  },
-  {
-    name: "Fish Pickle (Korramenu)",
-    price: 1700,
-    image: "https://images.pexels.com/photos/2098085/pexels-photo-2098085.jpeg",
-  },
+  { name: "Chicken Pickle (Boneless)",          price: 1400 },
+  { name: "Chicken Gongura Pickle (Boneless)",  price: 1500 },
+  { name: "Mutton Pickle (Boneless)",           price: 2300 },
+  { name: "Mutton Gongura Pickle (Boneless)",   price: 2400 },
+  { name: "Prawns Pickle",                      price: 1700 },
+  { name: "Prawns Gongura Pickle",              price: 1800 },
+  { name: "Fish Pickle (Korramenu)",            price: 1700 },
 ];
 
 export const vegPickles = [
@@ -42,27 +14,17 @@ export const vegPickles = [
     name: "Any Veg Pickle",
     price: 1000,
     note: "Gongura, Tomato, Allam, Kakarkaya, Cauliflower, Cabbage, Vusirikaya, Nimmakaya, Pandu Mirchi, Pudina",
-    image: "https://images.pexels.com/photos/7812134/pexels-photo-7812134.jpeg",
   },
-  {
-    name: "Andhra Avakaya",
-    price: 1300,
-    image: "https://images.pexels.com/photos/4198015/pexels-photo-4198015.jpeg",
-  },
-  {
-    name: "Telangana Avakaya",
-    price: 1500,
-    image: "https://images.pexels.com/photos/6210927/pexels-photo-6210927.jpeg",
-  },
+  { name: "Andhra Avakaya",    price: 1300 },
+  { name: "Telangana Avakaya", price: 1500 },
 ];
 
-// ---- Snacks grouped into 3 categories with a banner each ----
+// ---- Snacks grouped into 3 categories (text only, no banners) ----
 export const snackGroups = [
   {
     id: "savoury",
     title: "Savoury Snacks",
     description: "Crisp, fried & roasted — perfect with evening chai.",
-    banner: "https://images.pexels.com/photos/8629098/pexels-photo-8629098.jpeg",
     items: [
       { name: "Chekkalu / Appalu",       p250: 119, p500: 219, p1kg: 399 },
       { name: "Janthikalu / Murukulu",   p250: 119, p500: 219, p1kg: 399 },
@@ -79,7 +41,6 @@ export const snackGroups = [
     id: "sweets",
     title: "Sweets & Festival Specials",
     description: "Slow-stirred, ghee-rich classics for celebrations and gifting.",
-    banner: "https://images.pexels.com/photos/15012971/pexels-photo-15012971.jpeg",
     items: [
       { name: "Sunnudalu (Sugar/Belam)", p250: 179, p500: 329, p1kg: 599 },
       { name: "Ravva Laddu",             p250: 119, p500: 219, p1kg: 399 },
@@ -93,7 +54,6 @@ export const snackGroups = [
     id: "atukulu",
     title: "Healthy Atukulu",
     description: "Roasted millet, ragi, jowar & corn flakes — wholesome by the spoonful.",
-    banner: "https://images.pexels.com/photos/8500348/pexels-photo-8500348.jpeg",
     items: [
       { name: "Millet Atukulu / Murmuralu", p250: 89,  p500: 179, p1kg: 299 },
       { name: "Makka Atukulu",              p250: 119, p500: 219, p1kg: 399 },
@@ -103,13 +63,21 @@ export const snackGroups = [
   },
 ];
 
-// Flat list (kept for compatibility / tests)
+// Flat list of snacks (kept for compatibility / dropdown)
 export const snacks = snackGroups.flatMap((g) => g.items);
 
 // ---- WhatsApp links ----
 export const WHATSAPP_NUMBER = "917702220369";
 export const WHATSAPP_MESSAGE = "Hi Nirmala Home Foods! I would like to place an order.";
 export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+
+// Item-specific pre-fill — used inside the modal "Order on WhatsApp" button.
+// `qty` is optional ("250g", "500g", "1kg" or omitted for per-kg pickles).
+export const buildItemOrderLink = (itemName, qty) => {
+  const detail = qty ? `${qty} of ${itemName}` : itemName;
+  const text = `Hi Nirmala Home Foods! I would like to order: ${detail}.`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+};
 
 // Customer confirmation message after they submit the on-site form
 export const CUSTOMER_CONFIRM_MESSAGE =
@@ -123,6 +91,19 @@ export const buildOwnerOrderLink = ({ name, phone, items, notes }) => {
     (notes && notes.trim() ? ` | Notes: ${notes}` : "");
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(summary)}`;
 };
+
+// Flat list for the Contact form "Quick pick" dropdown
+export const allOrderableItems = [
+  ...nonVegPickles.map((i) => ({ label: `${i.name} — ₹${i.price}/kg`, value: i.name, group: "Non-Veg Pickles" })),
+  ...vegPickles.map((i)    => ({ label: `${i.name} — ₹${i.price}/kg`, value: i.name, group: "Veg Pickles" })),
+  ...snackGroups.flatMap((g) =>
+    g.items.map((s) => ({
+      label: `${s.name} — ₹${s.p250}/250g · ₹${s.p500}/500g · ₹${s.p1kg}/1kg`,
+      value: s.name,
+      group: g.title,
+    }))
+  ),
+];
 
 export const INSTAGRAM_LINK = "https://www.instagram.com/nirmala_home_foods";
 export const INSTAGRAM_HANDLE = "@nirmala_home_foods";

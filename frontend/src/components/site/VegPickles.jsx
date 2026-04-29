@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { SectionHeader } from "./SectionHeader";
-import { vegPickles, WHATSAPP_LINK } from "../../data/menu";
+import { ItemModal } from "./ItemModal";
+import { vegPickles } from "../../data/menu";
 
 const ACCENT = "#4E7A3B";
 
 export const VegPickles = () => {
+  const [openItem, setOpenItem] = useState(null);
+
   return (
     <section id="veg" className="relative py-24 md:py-32 px-6 md:px-12 kitchen-bg" data-testid="veg-section">
       <div className="max-w-6xl mx-auto">
@@ -17,72 +20,60 @@ export const VegPickles = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start">
           {vegPickles.map((item, idx) => (
-            <article
+            <button
               key={item.name}
+              type="button"
+              onClick={() => setOpenItem(item)}
               data-testid={`veg-card-${idx}`}
-              className={`card-glow group relative bg-nirmala-surface border border-nirmala-divider rounded-md overflow-hidden ${
+              aria-label={`View details for ${item.name}`}
+              className={`card-glow text-left bg-nirmala-surface border border-nirmala-divider rounded-md p-7 md:p-8 focus:outline-none focus:border-nirmala-amber ${
                 idx === 1 ? "md:mt-12" : idx === 2 ? "md:mt-6" : ""
               }`}
             >
-              <div className="relative h-48 md:h-56 overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(30,14,5,0.55) 60%, #2C1507 100%)",
-                  }}
-                />
-                <div
-                  className="absolute top-4 left-4 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] rounded-sm backdrop-blur-sm"
-                  style={{
-                    color: "#F2E4C4",
-                    background: "rgba(78, 122, 59, 0.85)",
-                    border: `1px solid ${ACCENT}`,
-                  }}
-                >
-                  Veg
-                </div>
+              <div
+                className="inline-block px-2.5 py-1 mb-6 text-[10px] font-semibold uppercase tracking-[0.22em] rounded-sm"
+                style={{
+                  color: ACCENT,
+                  background: "rgba(78, 122, 59, 0.18)",
+                  border: `1px solid ${ACCENT}55`,
+                }}
+              >
+                Veg
               </div>
-
-              <div className="p-7 md:p-8 pt-6">
-                <h3 className="text-2xl md:text-[28px] text-nirmala-text leading-tight mb-4 font-serif">
-                  {item.name}
-                </h3>
-                {item.note && (
-                  <p className="text-nirmala-muted/90 text-sm leading-relaxed mb-6 italic">
-                    {item.note}
-                  </p>
-                )}
-                <div className="flex items-end justify-between pt-5 border-t border-nirmala-divider">
-                  <div>
-                    <div className="text-[11px] uppercase tracking-[0.24em] text-nirmala-muted/70 mb-1">
-                      Per kilo
-                    </div>
-                    <div className="text-3xl text-nirmala-gold font-serif">
-                      ₹{item.price.toLocaleString("en-IN")}
-                    </div>
+              <h3 className="text-2xl md:text-[28px] text-nirmala-text leading-tight mb-4 font-serif">
+                {item.name}
+              </h3>
+              {item.note && (
+                <p className="text-nirmala-muted/90 text-sm leading-relaxed mb-6 italic line-clamp-2">
+                  {item.note}
+                </p>
+              )}
+              <div className="flex items-end justify-between pt-5 border-t border-nirmala-divider">
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-nirmala-muted/70 mb-1">
+                    Per kilo
                   </div>
-                  <a
-                    href={WHATSAPP_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-testid={`veg-order-${idx}`}
-                    className="text-xs uppercase tracking-[0.24em] text-nirmala-muted hover:text-nirmala-gold transition-colors"
-                  >
-                    Order →
-                  </a>
+                  <div className="text-3xl text-nirmala-gold font-serif">
+                    ₹{item.price.toLocaleString("en-IN")}
+                  </div>
                 </div>
+                <span className="text-xs uppercase tracking-[0.24em] text-nirmala-muted">
+                  View →
+                </span>
               </div>
-            </article>
+            </button>
           ))}
         </div>
       </div>
+
+      <ItemModal
+        open={!!openItem}
+        onOpenChange={(o) => !o && setOpenItem(null)}
+        item={openItem}
+        pricePerKg={openItem?.price}
+        accent={ACCENT}
+        category="Veg Pickle"
+      />
     </section>
   );
 };

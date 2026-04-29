@@ -1,40 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { SectionHeader } from "./SectionHeader";
+import { ItemModal } from "./ItemModal";
 import { snackGroups } from "../../data/menu";
 
 const ACCENT = "#D4860B";
 
-const SnackGroup = ({ group, gIdx }) => (
+const SnackGroup = ({ group, gIdx, onPick }) => (
   <div className="mb-16 last:mb-0" data-testid={`snack-group-${group.id}`}>
-    {/* Banner */}
-    <div className="relative h-44 md:h-56 lg:h-64 rounded-md overflow-hidden mb-8 border border-nirmala-divider">
-      <img
-        src={group.banner}
-        alt={group.title}
-        loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+    {/* Text-only group header (no banner image) */}
+    <div className="mb-6 pb-6 border-b border-nirmala-divider">
       <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(30,14,5,0.55) 50%, rgba(30,14,5,0.85) 100%)",
-        }}
-      />
-      <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-10">
-        <div
-          className="text-[11px] uppercase font-semibold mb-3"
-          style={{ color: "#D4860B", letterSpacing: "0.28em" }}
-        >
-          Group {gIdx + 1}
-        </div>
-        <h3 className="text-3xl md:text-4xl font-serif text-nirmala-text leading-tight mb-2">
-          {group.title}
-        </h3>
-        <p className="text-nirmala-muted/95 text-sm md:text-base max-w-xl italic">
-          {group.description}
-        </p>
+        className="text-[11px] uppercase font-semibold mb-3"
+        style={{ color: "#D4860B", letterSpacing: "0.28em" }}
+      >
+        Group {gIdx + 1}
       </div>
+      <h3 className="text-3xl md:text-4xl font-serif text-nirmala-text leading-tight mb-2">
+        {group.title}
+      </h3>
+      <p className="text-nirmala-muted/95 text-sm md:text-base italic max-w-2xl">
+        {group.description}
+      </p>
     </div>
 
     {/* Desktop table */}
@@ -51,9 +37,10 @@ const SnackGroup = ({ group, gIdx }) => (
             <th className="px-6 py-4 text-[11px] uppercase tracking-[0.24em] text-nirmala-amber font-semibold text-right">
               500 g
             </th>
-            <th className="px-8 py-4 text-[11px] uppercase tracking-[0.24em] text-nirmala-amber font-semibold text-right">
+            <th className="px-6 py-4 text-[11px] uppercase tracking-[0.24em] text-nirmala-amber font-semibold text-right">
               1 kg
             </th>
+            <th className="px-6 py-4" />
           </tr>
         </thead>
         <tbody>
@@ -61,13 +48,19 @@ const SnackGroup = ({ group, gIdx }) => (
             <tr
               key={s.name}
               data-testid={`snack-row-${group.id}-${idx}`}
-              className="border-t border-nirmala-divider hover:bg-nirmala-bg/40 transition-colors"
+              onClick={() => onPick(s)}
+              className="border-t border-nirmala-divider hover:bg-nirmala-bg/50 cursor-pointer transition-colors"
             >
               <td className="px-8 py-5 text-nirmala-text font-serif text-lg">{s.name}</td>
               <td className="px-6 py-5 text-nirmala-muted text-right tabular-nums">₹{s.p250}</td>
               <td className="px-6 py-5 text-nirmala-muted text-right tabular-nums">₹{s.p500}</td>
-              <td className="px-8 py-5 text-nirmala-gold text-right tabular-nums font-semibold">
+              <td className="px-6 py-5 text-nirmala-gold text-right tabular-nums font-semibold">
                 ₹{s.p1kg}
+              </td>
+              <td className="px-6 py-5 text-right">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-nirmala-muted/80">
+                  View →
+                </span>
               </td>
             </tr>
           ))}
@@ -78,10 +71,12 @@ const SnackGroup = ({ group, gIdx }) => (
     {/* Mobile list */}
     <div className="md:hidden space-y-4">
       {group.items.map((s, idx) => (
-        <div
+        <button
           key={s.name}
+          type="button"
+          onClick={() => onPick(s)}
           data-testid={`snack-mobile-${group.id}-${idx}`}
-          className="bg-nirmala-surface border border-nirmala-divider rounded-md p-5"
+          className="w-full text-left bg-nirmala-surface border border-nirmala-divider rounded-md p-5 hover:border-nirmala-amber/50 transition-colors"
         >
           <h4 className="text-lg font-serif text-nirmala-text mb-4">{s.name}</h4>
           <div className="grid grid-cols-3 gap-3 text-center">
@@ -96,13 +91,15 @@ const SnackGroup = ({ group, gIdx }) => (
               </div>
             ))}
           </div>
-        </div>
+        </button>
       ))}
     </div>
   </div>
 );
 
 export const Snacks = () => {
+  const [openItem, setOpenItem] = useState(null);
+
   return (
     <section id="snacks" className="relative py-24 md:py-32 px-6 md:px-12" data-testid="snacks-section">
       <div className="max-w-6xl mx-auto">
@@ -114,13 +111,30 @@ export const Snacks = () => {
         />
 
         {snackGroups.map((g, i) => (
-          <SnackGroup key={g.id} group={g} gIdx={i} />
+          <SnackGroup key={g.id} group={g} gIdx={i} onPick={setOpenItem} />
         ))}
 
         <p className="mt-8 text-sm text-nirmala-muted/80 italic">
           All items freshly prepared. Prices exclude delivery charges.
         </p>
       </div>
+
+      <ItemModal
+        open={!!openItem}
+        onOpenChange={(o) => !o && setOpenItem(null)}
+        item={openItem}
+        weights={
+          openItem
+            ? [
+                { label: "250g", price: openItem.p250 },
+                { label: "500g", price: openItem.p500 },
+                { label: "1kg",  price: openItem.p1kg },
+              ]
+            : null
+        }
+        accent={ACCENT}
+        category="Telugu Snack"
+      />
     </section>
   );
 };

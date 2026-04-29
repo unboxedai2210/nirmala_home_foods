@@ -1,0 +1,29 @@
+{
+  "summary": "Iteration 3 testing complete. Backend pytest 8/8 PASSED (no changes). Frontend: all menu sections (nonveg/veg/snacks) render 0 <img> elements as expected (text-only). Boneless subtitle present with '100% boneless'. Non-veg names verified: Chicken Pickle (Boneless), Chicken Gongura Pickle (Boneless), Mutton Pickle (Boneless), Mutton Gongura Pickle (Boneless), Prawns Pickle, Prawns Gongura Pickle, Fish Pickle (Korramenu). Pickle modal opens on nonveg-card-0 with name, price ₹1,400, eyebrow 'Non-Veg Pickle', 'Photo coming soon' placeholder, and modal-order-btn href decoded to wa.me/917702220369?text=Hi Nirmala Home Foods! I would like to order: Chicken Pickle (Boneless). Veg modal (veg-card-1) shows Andhra Avakaya at ₹1,300 with category 'Veg Pickle'. Snack modal (snack-row-savoury-0) shows Chekkalu / Appalu with three weight buttons modal-order-250g/500g/1kg each containing correctly URL-encoded 'I would like to order: 250g of Chekkalu / Appalu.' etc. Snack groups verified: savoury=9, sweets=6, atukulu=4 rows; sweets-5 opens 'Bobbatlu / Bhakshalu', atukulu-0 opens 'Millet Atukulu / Murmuralu'. Modal closes via modal-close. Quick-pick <select data-testid=contact-quick-pick> has 5 optgroups (Non-Veg Pickles, Veg Pickles, Savoury Snacks, Sweets & Festival Specials, Healthy Atukulu) with correct boneless item names; selecting 'Mutton Pickle (Boneless)' appends to items textarea and select resets to '' placeholder; selecting 'Andhra Avakaya' appends with comma separator → 'Mutton Pickle (Boneless), Andhra Avakaya'. Empty submit shows error toast and does NOT call API or window.open. Valid submit with name='UITestUser2_<ts>', phone='9876543210', items='Mutton Pickle (Boneless), 250g of Chekkalu / Appalu', notes='' → POST /api/orders persisted (verified via GET /api/orders), window.open called with wa.me/917702220369 URL-encoded 'New Order from UITestUser2_<ts> - 9876543210: Mutton Pickle (Boneless), 250g of Chekkalu / Appalu' (no Notes suffix because empty), and success toast 'Order received!' includes 'Open WhatsApp to Confirm' action. Zero console errors and zero pageerrors during full flow.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "ItemModal: pricePerKg uses toLocaleString('en-IN'); good. Modal eyebrow color is inline-styled per section accent — consistent.",
+    "Snacks.jsx: desktop <tr> uses cursor-pointer + onClick (good for click-to-modal) but is not keyboard-focusable. Consider role='button' tabIndex='0' onKeyDown for a11y. Mobile uses <button> (good).",
+    "ContactForm.jsx onPickItem: mutates e.target.value=''; works because <select> is uncontrolled with defaultValue=''. Acceptable but a controlled select w/ pickValue state would be cleaner.",
+    "Owner WhatsApp popup is opened post-await (after axios resolves). Some browsers may block as not a direct user gesture. Toast action button provides reliable manual fallback. Non-blocking — verified working in Chromium during test.",
+    "Backend Order model: created_at is required datetime; legacy entries without created_at would 500 on GET. Add Optional[datetime] for safety (carry-over from earlier iterations)."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "100%", "frontend": "100%" },
+  "test_credentials": "n/a",
+  "seed_data_creation": "Created TEST_* and one UITestUser2_<ts> order in Mongo `orders` via API during tests. Safe to clean up.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 3 fully passed. Key new data-testids: nonveg-boneless-note, nonveg-card-{0..6}, veg-card-{0..2}, item-modal, modal-item-name, modal-price, modal-eyebrow, modal-order-btn (pickles), modal-order-250g/500g/1kg (snacks), modal-close, contact-quick-pick. Modal renders via Radix portal at document.body — query globally, not within section. Pickle WA href format (decoded): 'https://wa.me/917702220369?text=Hi Nirmala Home Foods! I would like to order: <name>.' Snack format: 'I would like to order: <qty> of <name>.' Quick-pick select is uncontrolled (defaultValue=''); selecting a value calls onChange which appends to items textarea then clears e.target.value to reset display.",
+  "rca of the issue": "No issues found."
+}
