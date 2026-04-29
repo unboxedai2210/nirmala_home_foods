@@ -1,0 +1,134 @@
+{
+  "theme": "dark",
+  "archetype": "5",
+  "archetype_description": "Jewel & Luxury / Moody, intimate, cinematic. Adapted for a traditional Hyderabadi kitchen at dusk.",
+  "colors": {
+    "background": "#1E0E05",
+    "surface": "#2C1507",
+    "text_primary": "#F2E4C4",
+    "text_muted": "#C4A35A",
+    "accent_primary": "#D4860B",
+    "accent_hover": "#E8A823",
+    "highlight_veg": "#4E7A3B",
+    "highlight_nonveg": "#7A1E1E",
+    "divider": "#3A1E0A",
+    "footer": "#120804"
+  },
+  "typography": {
+    "headings": {
+      "family": "Playfair Display, serif",
+      "weight": "700",
+      "style": "Traditional, handcrafted, emotional"
+    },
+    "body": {
+      "family": "Work Sans, sans-serif",
+      "weight": "400",
+      "style": "Clean, highly readable against dark backgrounds"
+    },
+    "labels": {
+      "family": "Work Sans, sans-serif",
+      "weight": "600",
+      "transform": "uppercase",
+      "letter_spacing": "0.15em",
+      "color": "#D4860B"
+    },
+    "hierarchy": {
+      "h1": "text-5xl md:text-6xl tracking-tight leading-none",
+      "h2": "text-3xl md:text-4xl tracking-tight",
+      "h3": "text-2xl",
+      "body": "text-base leading-relaxed",
+      "small": "text-sm tracking-wide uppercase"
+    }
+  },
+  "layout_and_spacing": {
+    "philosophy": "Generous spacing. Dark, intimate, and moody. Avoid symmetrical perfection. Let the content breathe like the aroma of a slow-cooked meal.",
+    "container_padding": "p-8 md:p-16 lg:p-24",
+    "section_gap": "gap-24 md:gap-32",
+    "card_padding": "p-6 md:p-8",
+    "grid_patterns": {
+      "menu_staggered": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start. Middle column should have 'md:mt-12' to create a staggered, organic look rather than a rigid corporate grid.",
+      "snacks_table": "w-full text-left border-collapse",
+      "how_to_order": "flex flex-col md:flex-row gap-8 justify-between items-start"
+    }
+  },
+  "components": {
+    "hero": {
+      "style": "Full viewport height (min-h-screen). Background image with heavy dark overlay to ensure text contrast. Content aligned center or slightly offset. Huge serif typography.",
+      "overlay": "bg-[#1E0E05]/70 or bg-gradient-to-b from-[#1E0E05]/40 via-[#1E0E05]/60 to-[#1E0E05]"
+    },
+    "cards": {
+      "background": "bg-[#2C1507]",
+      "border": "border border-[#3A1E0A]",
+      "radius": "rounded-lg",
+      "shadow": "shadow-2xl shadow-black/50",
+      "hover": "transition-all duration-300 hover:-translate-y-2 hover:border-[#D4860B]/50"
+    },
+    "buttons": {
+      "primary": "bg-[#D4860B] text-[#1E0E05] hover:bg-[#E8A823] font-semibold px-8 py-3 rounded transition-colors",
+      "whatsapp_floating": "fixed bottom-8 right-8 z-50 bg-[#D4860B] text-[#1E0E05] hover:bg-[#E8A823] p-4 rounded-full shadow-[0_0_20px_rgba(212,134,11,0.3)] transition-transform hover:scale-110 flex items-center justify-center"
+    },
+    "badges": {
+      "non_veg": "bg-[#7A1E1E]/20 text-[#7A1E1E] border border-[#7A1E1E]/30 px-3 py-1 rounded text-xs uppercase tracking-widest",
+      "veg": "bg-[#4E7A3B]/20 text-[#4E7A3B] border border-[#4E7A3B]/30 px-3 py-1 rounded text-xs uppercase tracking-widest"
+    },
+    "dividers": {
+      "style": "h-px w-full bg-[#3A1E0A]"
+    },
+    "inputs": {
+      "background": "bg-[#1E0E05]",
+      "border": "border border-[#3A1E0A] focus:border-[#D4860B]",
+      "text": "text-[#F2E4C4]",
+      "placeholder": "text-[#C4A35A]/50",
+      "radius": "rounded"
+    }
+  },
+  "media": {
+    "images": {
+      "hero_background": {
+        "url": "https://images.pexels.com/photos/8649386/pexels-photo-8649386.jpeg",
+        "alt": "Assorted Indian spices dark moody flatlay",
+        "usage": "Hero section background with heavy #1E0E05 overlay"
+      },
+      "pickle_jar_1": {
+        "url": "https://images.pexels.com/photos/7812134/pexels-photo-7812134.jpeg",
+        "alt": "Traditional Indian mango pickle in rustic jar",
+        "usage": "Featured image for veg pickles section or about section"
+      },
+      "spice_texture": {
+        "url": "https://images.pexels.com/photos/31280796/pexels-photo-31280796.jpeg",
+        "alt": "Colorful spices on dark background",
+        "usage": "Background texture for How to Order or Contact sections (with extreme opacity reduction)"
+      },
+      "meal_shot": {
+        "url": "https://images.pexels.com/photos/7234281/pexels-photo-7234281.jpeg",
+        "alt": "South Indian meal on banana leaf",
+        "usage": "Visual accent in the footer or story section"
+      }
+    }
+  },
+  "icons": {
+    "library": "lucide-react",
+    "strategy": "Use sparingly. Must use the accent color (#D4860B) for active icons or text_muted (#C4A35A) for decorative icons. For the floating WhatsApp button, use the MessageCircle icon or import a custom SVG."
+  },
+  "motion": {
+    "strategy": "Slow, deliberate, elegant. No bouncy animations.",
+    "hover": "Smooth color and slight transform transitions (duration-300).",
+    "entrance": "Fade in with a slight upward translation (framer-motion, y: 20, opacity: 0 to 1, duration 0.8, ease: easeOut)."
+  },
+  "accessibility": {
+    "contrast": "Ensure #F2E4C4 is highly legible against #1E0E05 and #2C1507. If needed, apply text-shadow to headings over images.",
+    "focus": "Focus rings MUST use #D4860B with ring-offset-[#1E0E05].",
+    "testing": "All interactive elements MUST have descriptive data-testid attributes."
+  },
+  "instructions_to_main_agent": [
+    "Strictly adhere to the dark theme. No white backgrounds, no gray-scale defaults. Use #1E0E05 for main backgrounds.",
+    "Use Playfair Display for all Headings (H1, H2, H3) and Work Sans for body text.",
+    "Implement the 'Staggered Card Layout' for the menu. Map over items, and conditionally add a top margin (e.g., 'mt-0 md:mt-12') to the middle column elements to break the grid.",
+    "For the Snacks Pricing Table, build a custom responsive HTML table using the divider color (#3A1E0A) for borders, not a generic Shadcn datatable.",
+    "The floating WhatsApp CTA must be fixed to the bottom right and remain visible at all times.",
+    "Inject 'lucide-react' icons where necessary, but maintain the traditional, handcrafted feel.",
+    "When applying the background image to the hero, ensure an overlay like 'bg-[#1E0E05]/70' is applied so the text is fully readable.",
+    "Form inputs must use the custom styling provided in the components.inputs section. Do not use default white Shadcn inputs.",
+    "Add 'data-testid' to all buttons, links, and form inputs."
+  ]
+}
