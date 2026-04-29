@@ -27,15 +27,16 @@ how-to-order, contact form, footer, and a floating WhatsApp CTA.
 - MinOrderBanner (amber, fixed beneath nav).
 - Hero — full viewport, dark moody food bg, Playfair title, two CTAs (WhatsApp / View Menu).
 - Our Story — centered italic serif paragraph on dark surface.
-- Non-Veg Pickles — staggered cards **with per-item food photos and dark overlay**, maroon accent, all 7 items + ₹/kg prices.
-- Veg Pickles — staggered cards **with per-item photos**, gongura green accent, all 3 items.
-- **Snacks — restructured into 3 groups (Savoury / Sweets & Festival Specials / Healthy Atukulu) each with banner image + pricing table (250g/500g/1kg)**, all 19 items.
+- **Non-Veg Pickles — text-only clickable cards. Subtitle "All chicken & mutton pickles are 100% boneless". Names updated: Chicken / Chicken Gongura / Mutton / Mutton Gongura now end in "(Boneless)".**
+- **Veg Pickles — text-only clickable cards.**
+- **Snacks — text-only group headers (no banner images), 3 groups (Savoury / Sweets & Festival / Healthy Atukulu), each row is clickable.**
+- **ItemModal (shared shadcn-style Radix Dialog) — opens on any item click. Shows name, price (₹/kg or 3 weight chips for snacks), "Photo coming soon" placeholder, item-specific WhatsApp button(s) with pre-filled order text.**
 - How to Order — 4-step horizontal flow.
-- Contact form — name/phone/items/notes → POST /api/orders. **On success: auto-opens owner WhatsApp window with order summary AND shows toast with action button "Open WhatsApp to Confirm" linking customer to wa.me with confirm message.** Zero-cost dual notification.
+- **Contact form — added a "Quick pick" grouped <select> dropdown listing every item (with boneless naming); selecting an option appends it (comma-separated) to the items textarea. On submit: POST /api/orders → owner WhatsApp auto-opens with summary → toast w/ "Open WhatsApp to Confirm" action.**
 - Footer — WhatsApp + Instagram links.
 - Floating WhatsApp button (amber, pulse animation, pre-filled message).
 - All interactive elements have `data-testid`.
-- **Tested 100% by testing agent — iteration_1 (initial) and iteration_2 (photos + snack groups + dual WA notify).**
+- **Tested 100% across iterations 1–3.**
 
 ## Backlog
 ### P1
